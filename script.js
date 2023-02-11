@@ -32,31 +32,29 @@ function game() {
 }
 
 // fungsional game logic
-// pS = playerSection
-// cS = computerSection
-function playGround(pS, cS) {
-  if (pS == "rock") {
-    if (cS == "rock") {
+function playGround(playerSection, computerSection) {
+  if (playerSection == "rock") {
+    if (computerSection == "rock") {
       console.log("You tied this round!");
-    } else if (cS == "paper") {
+    } else if (computerSection == "paper") {
       console.log("You lost this round!");
     } else {
       console.log("You Won this round!");
       score++;
     }
-  } else if (pS == "paper") {
-    if (cS == "paper") {
+  } else if (playerSection == "paper") {
+    if (computerSection == "paper") {
       console.log("You tied this round!");
-    } else if (cS == "scissor") {
+    } else if (computerSection == "scissor") {
       console.log("You lost this round!");
     } else {
       console.log("You Won this round!");
       score++;
     }
   } else {
-    if (cS == "scissor") {
+    if (computerSection == "scissor") {
       console.log("You tied this round!");
-    } else if (cS == "rock") {
+    } else if (computerSection == "rock") {
       console.log("You lost this!");
     } else {
       console.log("You Won this round!");
