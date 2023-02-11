@@ -1,31 +1,13 @@
-function add7(plus) {
-  number = plus + 7;
-  console.log(number);
+let answer = parseInt(prompt("Enter your number: "));
+
+for (let i = 1; i <= answer; i++) {
+  if (i % 3 === 0 && i % 5 === 0) {
+    console.log("FizzBuzz");
+  } else if (i % 3 === 0) {
+    console.log("Fizz");
+  } else if (i % 5 === 0) {
+    console.log("Buzz");
+  } else {
+    console.log(i);
+  }
 }
-
-add7(3);
-
-function multiply(x, y) {
-  number = x + y;
-  console.log(number);
-}
-
-multiply(10, 5);
-
-function capitalize() {
-  let string = "watch";
-  let newString = string.toUpperCase()[0]; // retrun "watch" but only the first letter W to uppercase
-
-  return newString;
-}
-
-console.log(capitalize());
-
-function lastLetter() {
-  let string = "Hello There";
-  let newString = string[10];
-
-  return newString;
-}
-
-console.log(lastLetter());
