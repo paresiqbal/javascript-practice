@@ -11,3 +11,21 @@ function multiply(x, y) {
 }
 
 multiply(10, 5);
+
+function capitalize() {
+  let string = "watch";
+  let newString = string.toUpperCase()[0]; // retrun "watch" but only the first letter W to uppercase
+
+  return newString;
+}
+
+console.log(capitalize());
+
+function lastLetter() {
+  let string = "Hello There";
+  let newString = string[10];
+
+  return newString;
+}
+
+console.log(lastLetter());
