@@ -2,11 +2,13 @@ let playerSelection = "";
 let computerSelection = "";
 let score = 0;
 
+// declaring a value rock paper scissors
 function computerPlay() {
-  let arr = ["rock", "paper", "scissor"];
-  return arr[Math.floor(Math.random() * 3)];
+  let move = ["rock", "paper", "scissor"];
+  return move[Math.floor(Math.random() * 3)];
 }
 
+// game round logic
 function game() {
   for (let i = 0; i < 5; i++) {
     const playerSelection = window.prompt("Enter you choice.").toLowerCase();
@@ -28,6 +30,10 @@ function game() {
     playGround(playerSelection, computerSelection);
   }
 }
+
+// fungsional game logic
+// pS = playerSection
+// cS = computerSection
 function playGround(pS, cS) {
   if (pS == "rock") {
     if (cS == "rock") {
@@ -58,5 +64,6 @@ function playGround(pS, cS) {
     }
   }
 }
+
 game();
 console.log("Your score is " + score + "/5");
