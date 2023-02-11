@@ -1,12 +1,13 @@
-function Player(name, marker) {
-  this.name = name;
-  this.marker = marker;
-  this.sayName = function () {
-    console.log(name);
-  };
+function add7(plus) {
+  number = plus + 7;
+  console.log(number);
 }
 
-const player1 = new Player("steve", "X");
-const player2 = new Player("also steve", "O");
-player1.sayName(); // logs 'steve'
-player2.sayName(); // logs 'also steve'
+add7(3);
+
+function multiply(x, y) {
+  number = x + y;
+  console.log(number);
+}
+
+multiply(10, 5);
