@@ -1,112 +1,96 @@
-let library;
-const DEFAULT_DATA = [
-  { name: "Naruto", author: "Masashi Kishimoto", status: "read" },
-];
+const gameboard = document.getElementById("gameboard");
+const boxes = Array.from(document.getElementsByClassName("box"));
+const restartBtn = document.getElementById("restartBtn");
+const playText = document.getElementById("playText");
+const spaces = [null, null, null, null, null, null, null, null, null];
+const O_TEXT = "O";
+const X_TEXT = "X";
+let currentPlayer = O_TEXT;
 
-// button event, add book
-const $name = document.querySelector("#name");
-const $author = document.querySelector("#author");
-const $status = document.querySelector("#status");
-const $tableBody = document.querySelector("#book-table-body");
+const drawBoard = () => {
+  boxes.forEach((box, index) => {
+    let styleString = "";
+    if (index < 3) {
+      styleString += `border-bottom: 3px solid var(--purple);`;
+    }
+    if (index % 3 === 0) {
+      styleString += `border-right: 3px solid var(--purple);`;
+    }
+    if (index % 3 === 2) {
+      styleString += `border-left: 3px solid var(--purple);`;
+    }
+    if (index > 5) {
+      styleString += `border-top: 3px solid var(--purple);`;
+    }
+    box.style = styleString;
 
-const $form = document.querySelector("form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  addBookToLibrary();
-  render();
-  clearForm();
+    box.addEventListener("click", boxClicked);
+  });
+};
+
+function boxClicked(e) {
+  const id = e.target.id;
+  if (!spaces[id]) {
+    spaces[id] = currentPlayer;
+    e.target.innerText = currentPlayer;
+    if (hasPlayerWon(currentPlayer)) {
+      playText.innerHTML = `${currentPlayer} wins!!`;
+      return;
+    }
+    currentPlayer = currentPlayer === O_TEXT ? X_TEXT : O_TEXT;
+  }
+}
+
+const hasPlayerWon = (player) => {
+  //from top left, check across, down, and diagonal
+  if (spaces[0] === player) {
+    if (spaces[1] === player && spaces[2] === player) {
+      console.log(`${player} wins up top`);
+      return true;
+    }
+    if (spaces[3] === player && spaces[6] === player) {
+      console.log(`${player} wins on the left`);
+      return true;
+    }
+    if (spaces[4] === player && spaces[8] === player) {
+      console.log(`${player} wins on the diagonal`);
+      return true;
+    }
+  }
+  //from bottom check up and across
+  if (spaces[8] === player) {
+    if (spaces[2] === player && spaces[5] === player) {
+      console.log(`${player} wins on the right`);
+      return true;
+    }
+    if (spaces[7] === player && spaces[6] === player) {
+      console.log(`${player} wins on the bottom`);
+      return true;
+    }
+  }
+  //from middle check middle vertical and middle horizontal
+  if (spaces[4] === player) {
+    if (spaces[3] === player && spaces[5] === player) {
+      console.log(`${player} wins on the middle horizontal`);
+      return true;
+    }
+    if (spaces[1] === player && spaces[7] === player) {
+      console.log(`${player} wins on the middle vertical`);
+      return true;
+    }
+  }
+};
+
+restartBtn.addEventListener("click", () => {
+  spaces.forEach((space, index) => {
+    spaces[index] = null;
+  });
+  boxes.forEach((box) => {
+    box.innerText = "";
+  });
+  playText.innerHTML = `Let's Play!!`;
+
+  currentPlayer = O_TEXT;
 });
 
-// book constructor
-class Book {
-  constructor(name, author, status) {
-    this.name = name;
-    this.author = author;
-    this.status = status;
-  }
-}
-
-// fucntion to push book to local storage
-function addBookToLibrary() {
-  if ($name.value.length === 0 || $author.value.length === 0) {
-    alert("Please, fill all the fields");
-    return;
-  }
-  const newBook = new Book($name.value, $author.value, $status.value);
-
-  library.push(newBook);
-  updateLocalStorage();
-}
-
-// function change status read or not read
-function changeStatus(book) {
-  if (library[book].status === "read") {
-    library[book].status = "not read";
-  } else library[book].status = "read";
-}
-
-// delete book
-function deleteBook(currentBook) {
-  library.splice(currentBook, currentBook - 1);
-}
-
-// find book in local storage to change status
-function findBook(libraryArray, name) {
-  if (libraryArray.length === 0 || libraryArray === null) {
-    return;
-  }
-  for (Book of libraryArray)
-    if (Book.name === name) {
-      return libraryArray.indexOf(Book);
-    }
-}
-
-function clearForm() {
-  $name.value = "";
-  $author.value = "";
-}
-
-function updateLocalStorage() {
-  localStorage.setItem("library", JSON.stringify(library));
-  //library = JSON.parse(localStorage.getItem("library"));
-}
-
-function checkLocalStorage() {
-  if (localStorage.getItem("library")) {
-    library = JSON.parse(localStorage.getItem("library"));
-  } else {
-    library = DEFAULT_DATA;
-  }
-}
-
-const $table = document
-  .querySelector("table")
-  .addEventListener("click", (e) => {
-    const currentTarget = e.target.parentNode.parentNode.childNodes[1];
-    if (e.target.innerHTML == "delete") {
-      if (confirm(`are you sure you want to delete ${currentTarget.innerText}`))
-        deleteBook(findBook(library, currentTarget.innerText));
-    }
-    if (e.target.classList.contains("status-button")) {
-      changeStatus(findBook(library, currentTarget.innerText));
-    }
-    updateLocalStorage();
-    render();
-  });
-
-function render() {
-  checkLocalStorage();
-  $tableBody.innerHTML = "";
-  library.forEach((book) => {
-    const htmlBook = `
-      <tr>
-        <td>${book.name}</td>
-        <td>${book.author}</td>
-        <td><button class="status-button">${book.status}</button></td>
-        <td><button class="delete">delete</button></td>
-      </tr>
-      `;
-    $tableBody.insertAdjacentHTML("afterbegin", htmlBook);
-  });
-}
-
-render();
+drawBoard();
